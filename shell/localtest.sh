@@ -1,15 +1,18 @@
 #!/bin/bash
-container_name=(homepage_server homepage_db homepage_restore)
+container_name=(blog_server blog_db db_restore)
+
+function do_command() {
+  echo $1
+  $1
+}
 
 function localtest() {
-  cmd="cd docker"
+  echo "localtest begin"
+  do_command "cd docker"
   for data in ${container_name[@]}
   do
-    cmd=${cmd}"docker-compose up --build -d ${data};"
+    do_command "docker-compose up -d --build ${data}"
   done
-  echo "localtest begin"
-  echo "${cmd}"
-  ${cmd}
 }
 
 case "$1" in
@@ -18,6 +21,5 @@ case "$1" in
     ;;
 
   *)
-    echo "please choose one {dump | restore}"
     exit 1
 esac

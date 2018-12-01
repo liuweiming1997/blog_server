@@ -1,7 +1,7 @@
 #!/bin/bash
-container_name=(homepage_server homepage_db homepage_restore)
+container_name=(blog_server blog_db db_restore)
 server_address=95.163.202.160
-project_name="homepage-server"
+project_name="blog-server"
 
 function deploy() {
   stopRemote
@@ -15,7 +15,7 @@ function deploy() {
   cmd="cd ${project_name}/docker;"
   for data in ${container_name[@]}
   do
-      cmd=${cmd}"docker-compose up --build -d ${data};"
+      cmd=${cmd}"docker-compose up -d --build ${data};"
   done
   echo ${cmd}
   ssh root@${server_address} ${cmd}
@@ -94,6 +94,5 @@ case "$1" in
     updateServer
     ;;
   *)
-    echo "please choose one {dump | restore}"
     exit 1
 esac

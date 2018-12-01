@@ -1,6 +1,6 @@
 version: '3'
 services:
-  homepage_server:
+  blog_server:
     build:
       context: ..
       dockerfile: docker/server.dockerfile
@@ -8,26 +8,24 @@ services:
       - ${PWD}/../volumes/log:/log
       - ${PWD}/../volumes/tmp:/tmp
     ports:
-      - "1121:1121"
-    restart: always
-    container_name: "homepage_server"
+      - "8888:8888"
+    container_name: "blog_server"
     depends_on:
-      - homepage_db
+      - blog_db
 
-  homepage_db:
+  blog_db:
     image: mysql:5.7
     volumes:
-      - ${PWD}/../volumes/mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     ports:
-      - "127.0.0.1:1120:3306"
+      - "127.0.0.1:3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    restart: always
-    container_name: "homepage_db"
+    container_name: "blog_db"
 
-  homepage_restore:
+  db_restore:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -37,23 +35,11 @@ services:
       - ../db:/db
       - ../shell:/shell
     depends_on:
-      - homepage_db
+      - blog_db
     links:
-      - homepage_db
+      - blog_db
     command: "./shell/deploy.sh restore"
-    container_name: "homepage_restore"
+    container_name: "db_restore"
 
-  nginx:
-    image: nginx:latest
-    ports:
-        - "80:80"
-    environment:
-      - LANG=en_US.UTF-8
-      - LANGUAGE=en_US:en
-      - LC_ALL=en_US.UTF-8
-    volumes:
-      # 映射主机./conf.d目录到容器/etc/nginx/conf.d目录
-      - "$PWD/nginx.conf:/etc/nginx/conf.d/default.conf"
-      - "/root/show/:/show"
-    restart: always
-    container_name: "nginx"
+volumes:
+  mysql_data:

@@ -1,4 +1,4 @@
-.PHONY: homepage-server
+.PHONY: blog-server
 
 deploy:
 	@./shell/deploy.sh deploy

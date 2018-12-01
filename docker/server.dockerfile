@@ -1,6 +1,6 @@
 FROM python:3
 
-ARG WORKSPACE="/python3/homepage-server"
+ARG WORKSPACE="/python3/blog-server"
 COPY . ${WORKSPACE}
 
 WORKDIR ${WORKSPACE}/docker
