@@ -12,6 +12,12 @@ services:
     container_name: "blog_server"
     depends_on:
       - blog_db
+  
+  blog_testing:
+    build:
+      context: ..
+      dockerfile: docker/testing.dockerfile
+    container_name: "blog_testing"
 
   blog_db:
     image: mysql:5.7

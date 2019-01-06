@@ -1,7 +1,7 @@
 #!/bin/bash
-container_name=(blog_server blog_db db_restore)
+container_name=(blog_server blog_db db_restore blog_testing)
 server_address=95.163.202.160
-project_name="blog-server"
+project_name="blog_server"
 
 function deploy() {
   stopRemote
