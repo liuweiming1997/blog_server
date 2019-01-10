@@ -9,7 +9,7 @@ def set_up_logging():
 def set_up():
     app.config['SECRET_KEY'] = config.SECRET_KEY
     app.config['JSON_AS_ASCII'] = False
-    app.config['JSON_SORT_KEYS'] = False
-    app.config["SESSION_COOKIE_HTTPONLY"] = False
+    app.config['JSON_SORT_KEYS'] = True
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
 
 set_up()

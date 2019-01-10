@@ -1,5 +1,5 @@
 #!/bin/bash
-container_name=(blog_server blog_db db_restore blog_testing)
+container_name=(blog_server blog_db db_restore)
 
 function do_command() {
   echo $1

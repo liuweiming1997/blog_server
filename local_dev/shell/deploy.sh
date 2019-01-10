@@ -1,5 +1,5 @@
 #!/bin/bash
-container_name=(blog_server blog_db db_restore blog_testing)
+container_name=(blog_server blog_db db_restore)
 server_address=95.163.202.160
 project_name="blog_server"
 
@@ -21,11 +21,6 @@ function deploy() {
   ssh root@${server_address} ${cmd}
 }
 
-function getRemote() {
-  echo "getting....."
-  rsync -avz --delete root@${server_address}:/root/${project_name} ../
-}
-
 function stopRemote() {
   echo "stop....."
   cmd=""
@@ -42,27 +37,11 @@ function logRemote() {
   ssh root@${server_address} "docker logs -f ${container_name[0]}"
 }
 
-#get remote database sql to local
-function dump() {
-  mysqldump -h${DB_HOST} -u$root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} > ./db/sql/latest_dump.sql
-}
-
 function restore() {
   second=10
   echo "sleep ${second} seconds to wait db start"
   sleep ${second}
   mysql -h${DB_HOST} -uroot -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < ./db/sql/latest_dump.sql
-}
-
-function updateServer() {
-  rsync -avz ../${project_name} root@${server_address}:/root
-  echo "-------------------------------->"
-  echo "update remove server....."
-  cmd="cd ${project_name}/docker;"
-  cmd=${cmd}"docker rm -f ${container_name[0]};"
-  cmd=${cmd}"docker-compose up --build -d ${container_name[0]};"
-  echo ${cmd}
-  ssh root@${server_address} ${cmd}
 }
 
 case "$1" in
@@ -74,25 +53,14 @@ case "$1" in
     stopRemote
     ;;
 
-  getRemote)
-    getRemote
-    ;;
-
   logRemote)
     logRemote
-    ;;
-
-  dump)
-    dump
     ;;
 
   restore)
     restore
     ;;
 
-  updateServer)
-    updateServer
-    ;;
   *)
     exit 1
 esac
