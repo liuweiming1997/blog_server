@@ -1,17 +1,16 @@
 from server import app
 
-from flask import make_response
-from flask import session, g
-from decorator.parse_user import parse_user
+from flask import session, g, jsonify, make_response
+from decorator.decorator_tools import parse_user, pares_access
 
 @app.route('/register')
-@parse_user()
+@pares_access()
 def register():
-    resp = make_response('hello world' + g.user)
+    resp = make_response('hello world')
     return resp
 
 @app.route('/')
+@pares_access()
 def index():
     session['user_id'] = 2
-    resp = make_response('index page')
-    return resp
+    return jsonify({"success":1})
