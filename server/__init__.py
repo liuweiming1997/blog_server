@@ -10,5 +10,6 @@ def set_up():
     app.config['SECRET_KEY'] = config.SECRET_KEY
     app.config['JSON_AS_ASCII'] = False
     app.config['JSON_SORT_KEYS'] = False
+    app.config["SESSION_COOKIE_HTTPONLY"] = False
 
 set_up()
