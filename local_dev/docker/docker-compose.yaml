@@ -7,9 +7,16 @@ services:
     volumes:
       - ${PWD}/../volumes/log:/log
       - ${PWD}/../volumes/tmp:/tmp
+    environment:
+      - MYSQL_ROOT_USER="root"
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - DB_HOST=${DB_HOST}
     ports:
       - ${SERVER_PORT_MAPPING}
     container_name: "blog_server"
+    links:
+      - blog_db
     depends_on:
       - blog_db
 
